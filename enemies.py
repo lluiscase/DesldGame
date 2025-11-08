@@ -1,17 +1,20 @@
 import pygame
 import defaults
 import player
+import random
 #list_enemies=[]
 #Enemies - type,life,hit,collision,speed,size
 
 class Enemie():
-    def __init__(self):
+    def __init__(self,x,y):
         self.life = 3
         self.size = 25
         self.hit = 1
         self.type = None
-        self.speed = 5
-        self.position = pygame.Vector2(defaults.screen.get_width() / 4 ,defaults.screen.get_height() / 4)
+        self.speed = 1.5
+        self.position = pygame.Vector2(x,y)
+        self.sprite_enemie()
+        self.move()
     def sprite_enemie(self):
         square=[
         (self.position.x,self.position.y),
@@ -23,9 +26,16 @@ class Enemie():
     def move(self):
         dx = player.initial_pos.x - self.position.x
         dy = player.initial_pos.y - self.position.y
-        dist = max(1, (dx**2 + dy**2) ** 0.5)
-        self.position.x += self.speed - dx /dist
-        self.position.y += self.speed - dy /dist
+        dist = (dx ** 2 + dy ** 2) ** .5 + 1
+        x_vel = dx / dist * self.speed
+        y_vel = dy / dist * self.speed
+
+        self.position.x += x_vel
+        self.position.y += y_vel
         
-#def generate_enemies():
+def generate_enemies():
+    x = random.randint(1, defaults.screen.get_width())
+    y = random.randint(1, defaults.screen.get_height())
+    new_enemie = Enemie(x,y)
+    return new_enemie
 #def hit():

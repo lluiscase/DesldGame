@@ -1,6 +1,6 @@
 import pygame
 from player import Player
-from enemies import Enemie
+import enemies
 import defaults
 
 pygame.init()
@@ -9,16 +9,18 @@ running =True
 dt = 0
 
 jogador = Player()
-inimigo = Enemie()
+
+enemies_list =[enemies.generate_enemies() for _ in range(5)]
 
 while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
     defaults.screen.fill((0, 0, 12)) 
-    inimigo.sprite_enemie()
-    inimigo.move()
     jogador.sprite_player()
+    for e in enemies_list:
+        e.move()
+        e.sprite_enemie()
     keys = pygame.key.get_pressed()
     jogador.mov_player(keys,dt)
     pygame.display.flip()
