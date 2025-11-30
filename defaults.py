@@ -1,9 +1,8 @@
 import pygame
-from item_trash import generate_enemies
+
 WINDOW_HEIGTH = 720
 WINDOW_WIDTH = 1280
 screen = pygame.display.set_mode((WINDOW_WIDTH,WINDOW_HEIGTH))
-enemies_list =[generate_enemies() for _ in range(5)]
 
 class BoxTrash():
     def __init__(self,x,y):
@@ -19,5 +18,3 @@ class BoxTrash():
 #Posições dos lixos
 display_trash = [{"x":100,"y":50},{"x":1080,"y":600},{"x":100,"y":600},{"x":1080,"y":50}]
 trash_boxes = [BoxTrash(pos["x"],pos["y"]) for pos in display_trash ]
-
-#def timer():
