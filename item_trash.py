@@ -15,13 +15,13 @@ distortion_start = 0
 
 trash_types = ["organico", "vidro", "plastico", "metal"]
 trash_images = {
-    "organico": "./img/500x500 darc.png",
-    "vidro": "./img/500x500 darc.png",
-    "plastico": "./img/500x500 darc.png",
-    "metal": "./img/500x500 darc.png"
+    "organico": "./img/trash.png",
+    "vidro": "./img/trash.png",
+    "plastico": "./img/trash.png",
+    "metal": "./img/trash.png"
 }
 
-box_image_path = "./img/500x500 darc.png"
+box_image_path = "./img/trash.png"
 
 # Globals OpenGL
 _gl_inited = False
@@ -119,10 +119,15 @@ def draw_textured_quad(tex_id, x, y, w, h, program=None):
         glUseProgram(program)
     glBindTexture(GL_TEXTURE_2D, tex_id)
     glBegin(GL_QUADS)
-    glTexCoord2f(0, 0); glVertex2f(x, y)
-    glTexCoord2f(1, 0); glVertex2f(x + w, y)
-    glTexCoord2f(1, 1); glVertex2f(x + w, y + h)
-    glTexCoord2f(0, 1); glVertex2f(x, y + h)
+    
+    glTexCoord2f(0, 1); glVertex2f(x, y) 
+    
+    glTexCoord2f(1, 1); glVertex2f(x + w, y)
+    
+    glTexCoord2f(1, 0); glVertex2f(x + w, y + h)
+    
+    glTexCoord2f(0, 0); glVertex2f(x, y + h)
+    
     glEnd()
     glBindTexture(GL_TEXTURE_2D, 0)
     if program:
@@ -212,7 +217,7 @@ def apply_distortion():
     glPushAttrib(GL_ALL_ATTRIB_BITS)
     glEnable(GL_BLEND)
     glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
-    glColor4f(0.8, 0.1, 0.1, alpha)
+    glColor4f(0.1, 0.8, 0.1, alpha)
     glBegin(GL_QUADS)
     glVertex2f(0, 0)
     glVertex2f(_window_size[0], 0)
