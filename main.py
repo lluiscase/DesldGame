@@ -2,33 +2,54 @@ import pygame
 import defaults
 import player
 import item_trash
+import sys
+
 pygame.init()
+defaults.init()  # inicializa screen e trash_boxes
 
 clock = pygame.time.Clock()
-running =True
-dt = 0
-active_box =None
+running = True
+active_box = None
 score = 0
+font = pygame.font.SysFont(None, 36)
 
 while running:
     for event in pygame.event.get():
-        
         if event.type == pygame.QUIT:
             running = False
-        active_box = player.mouseData(event=event,active_box=active_box,list=item_trash.enemies_list)
+            break
 
-    defaults.screen.fill((0, 0, 12)) 
+        active_box, scored = player.mouseData(
+            event=event,
+            active_box=active_box,
+            list=item_trash.enemies_list
+        )
+
+        if scored:
+            score += 1
+            item_trash.start_distortion()
+
+            # ⭐ INVERTE AS LIXEIRAS TODA VEZ QUE PONTUA
+            defaults.invert_trash_boxes()
+
+    defaults.screen.fill((250, 250, 250))
 
     item_trash.spawn()
 
-    #Desenha os lixos
-    for draw_boxes in defaults.trash_boxes:
-        draw_boxes.draw_box()
-    
-    #Desenha os itens que serão jogados fora
-    for e in item_trash.enemies_list:
-        e.sprite_enemie()
-    
+    for box in defaults.trash_boxes:
+        box.draw_box(defaults.screen)
+
+    for e in list(item_trash.enemies_list):
+        e.sprite_enemie(defaults.screen)
+
+    score_surf = font.render(f"Score: {score}", True, (0, 0, 0))
+    defaults.screen.blit(score_surf, (20, 20))
+
+    # overlay de distorção
+    item_trash.apply_distortion_overlay(defaults.screen)
+
     pygame.display.flip()
-    dt = clock.tick(60) / 100
+    clock.tick(60)
+
 pygame.quit()
+sys.exit()
